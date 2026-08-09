@@ -461,6 +461,15 @@ export function FleetPage() {
           )}
           <div className="flex flex-wrap items-center gap-1.5 sm:ml-auto sm:justify-end">
             <Button
+              disabled={areActionsDisabled}
+              onClick={() => {
+                setIsApplyConfirmOpen(true);
+              }}
+            >
+              <Rocket aria-hidden />
+              {isGlobal ? t('applySelected') : t('apply')}
+            </Button>
+            <Button
               variant="outline"
               disabled={areActionsDisabled}
               onClick={() => {
@@ -469,15 +478,6 @@ export function FleetPage() {
             >
               <Save aria-hidden />
               {t('save')}
-            </Button>
-            <Button
-              disabled={areActionsDisabled}
-              onClick={() => {
-                setIsApplyConfirmOpen(true);
-              }}
-            >
-              <Rocket aria-hidden />
-              {isGlobal ? t('applySelected') : t('apply')}
             </Button>
             <UtilitiesMenu
               utilitiesLabel={t('utilities')}
