@@ -28,14 +28,21 @@ export const applyRequestSchema = z.object({
 
 export type ApplyRequest = z.infer<typeof applyRequestSchema>;
 
-export type ApplyStage = 'save' | 'restart';
+export type ApplyStage = 'save' | 'restart' | 'backup';
 
 export interface ApplyRouterResult {
   routerId: string;
   ok: boolean;
   stage?: ApplyStage;
   error?: string;
+  backupName?: string;
 }
+
+export const backupRequestSchema = z.object({
+  routerIds: z.array(z.string().min(1)).min(1),
+});
+
+export type BackupRequest = z.infer<typeof backupRequestSchema>;
 
 export interface HealthStatus {
   routerId: string;

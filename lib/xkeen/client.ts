@@ -159,6 +159,34 @@ export async function softRestart(
   }
 }
 
+export interface XkeenBackupItem {
+  name: string;
+  mtime?: string;
+  size?: number;
+}
+
+const BACKUP_TIMEOUT_MS = 60_000;
+
+export async function createBackup(ip: string): Promise<XkeenBackupItem> {
+  const data = await fetchJson<XkeenApiResponse & { backup?: XkeenBackupItem }>(
+    `${baseUrl(ip)}/api/backup`,
+    {
+      init: { method: 'PUT' },
+      timeoutMs: BACKUP_TIMEOUT_MS,
+    },
+  );
+
+  if (!data.success) {
+    throw new Error(data.error ?? 'Failed to create backup');
+  }
+
+  if (!data.backup?.name) {
+    throw new Error('Backup created without a name');
+  }
+
+  return data.backup;
+}
+
 export function findMihomoConfig(
   configs: XkeenConfigItem[],
   configPath: string,

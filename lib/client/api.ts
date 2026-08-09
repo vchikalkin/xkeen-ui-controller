@@ -153,3 +153,36 @@ export async function runApplyForRouter(
     }
   );
 }
+
+interface BackupInput {
+  routerIds: string[];
+}
+
+export async function runBackupForRouter(
+  routerId: string,
+): Promise<ApplyRouterResult> {
+  const data = await request<{ results: ApplyRouterResult[]; ok: boolean }>(
+    '/api/backup',
+    {
+      init: {
+        method: 'POST',
+        body: JSON.stringify({
+          routerIds: [routerId],
+        } satisfies BackupInput),
+      },
+    },
+  );
+
+  if (!data.success) {
+    throw new Error(data.error);
+  }
+
+  return (
+    data.results.at(0) ?? {
+      routerId,
+      ok: false,
+      stage: 'backup',
+      error: 'Empty backup result',
+    }
+  );
+}

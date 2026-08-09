@@ -69,6 +69,8 @@ export function ApplyTargets({
 
           if (isPending) {
             statusLabel = t('progressPending');
+          } else if (result?.ok && result.stage === 'backup' && result.backupName) {
+            statusLabel = t('backupOk', { name: result.backupName });
           } else if (result?.ok) {
             statusLabel = t('progressOk', { stage: result.stage ?? 'save' });
           } else if (result) {

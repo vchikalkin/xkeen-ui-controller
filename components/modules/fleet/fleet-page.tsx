@@ -1,6 +1,6 @@
 'use client';
 
-import { Rocket, Save } from 'lucide-react';
+import { Archive, Rocket, Save } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertDialog } from '@/components/ui/alert-dialog';
@@ -13,6 +13,7 @@ import {
   fetchRouters,
   removeRouter,
   runApplyForRouter,
+  runBackupForRouter,
   saveDraft,
 } from '@/lib/client/api';
 import { GLOBAL_TAB } from '@/lib/fleet-constants';
@@ -274,6 +275,68 @@ export function FleetPage() {
     }
   };
 
+  const runBackup = async () => {
+    if (targetRouters.length === 0) {
+      setActionError(t('noTargets'));
+
+      return;
+    }
+
+    const routerIds = targetRouters.map((router) => router.id);
+
+    setIsBusy(true);
+    setActionError(null);
+    setResults([]);
+    setPendingIds(routerIds);
+
+    try {
+      const outcomes = await Promise.all(
+        routerIds.map(async (routerId) => {
+          try {
+            const result = await runBackupForRouter(routerId);
+
+            setResults((prev) => {
+              return [
+                ...prev.filter((item) => item.routerId !== routerId),
+                result,
+              ];
+            });
+
+            return result;
+          } catch (error) {
+            const result: ApplyRouterResult = {
+              routerId,
+              ok: false,
+              stage: 'backup',
+              error:
+                error instanceof Error ? error.message : t('actionError'),
+            };
+
+            setResults((prev) => {
+              return [
+                ...prev.filter((item) => item.routerId !== routerId),
+                result,
+              ];
+            });
+
+            return result;
+          } finally {
+            setPendingIds((prev) => prev.filter((id) => id !== routerId));
+          }
+        }),
+      );
+
+      if (outcomes.some((result) => !result.ok)) {
+        setActionError(t('backupPartialFailure'));
+      }
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : t('actionError'));
+      setPendingIds([]);
+    } finally {
+      setIsBusy(false);
+    }
+  };
+
   const onlineCount = routers.filter(
     (router) => healthById[router.id]?.online,
   ).length;
@@ -289,6 +352,16 @@ export function FleetPage() {
     footerStatus = { text: actionError, tone: 'error' };
   } else if (!isGlobal && isActiveRouterPending) {
     footerStatus = { text: t('progressPending'), tone: 'muted' };
+  } else if (
+    !isGlobal &&
+    activeRouterResult?.ok &&
+    activeRouterResult.stage === 'backup' &&
+    activeRouterResult.backupName
+  ) {
+    footerStatus = {
+      text: t('backupOk', { name: activeRouterResult.backupName }),
+      tone: 'ok',
+    };
   } else if (!isGlobal && activeRouterResult?.ok) {
     footerStatus = {
       text: t('progressOk', { stage: activeRouterResult.stage ?? 'save' }),
@@ -305,6 +378,7 @@ export function FleetPage() {
 
   const areActionsDisabled =
     isBusy || isLoading || !isDirty || !isValid || targetRouters.length === 0;
+  const isBackupDisabled = isBusy || isLoading || targetRouters.length === 0;
 
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col overflow-hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6">
@@ -415,6 +489,16 @@ export function FleetPage() {
             >
               <Rocket aria-hidden className="size-4" />
               {isGlobal ? t('applySelected') : t('apply')}
+            </Button>
+            <Button
+              variant="outline"
+              disabled={isBackupDisabled}
+              onClick={() => {
+                ignorePromise(runBackup());
+              }}
+            >
+              <Archive aria-hidden className="size-4" />
+              {isGlobal ? t('backupSelected') : t('backup')}
             </Button>
           </div>
           {footerStatus ? (
