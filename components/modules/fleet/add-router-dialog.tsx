@@ -45,7 +45,7 @@ export function AddRouterDialog({
       }}
     >
       <div className="flex flex-col gap-3">
-        <label className="flex flex-col gap-1.5 text-sm">
+        <label className="flex flex-col gap-1.5 text-[13px]">
           <span>{t('ipLabel')}</span>
           <Input
             value={ip}
@@ -57,7 +57,7 @@ export function AddRouterDialog({
             }}
           />
         </label>
-        <label className="flex flex-col gap-1.5 text-sm">
+        <label className="flex flex-col gap-1.5 text-[13px]">
           <span>{t('nameLabel')}</span>
           <Input
             value={name}

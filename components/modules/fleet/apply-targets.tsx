@@ -42,7 +42,7 @@ export function ApplyTargets({
   }
 
   return (
-    <div className="flex flex-col gap-3 rounded-md border border-border bg-card p-3">
+    <div className="flex flex-col gap-2 rounded-md border border-border bg-background p-3">
       <div className="flex shrink-0 items-center justify-between gap-3">
         <p className="text-sm font-medium">{t('targetsLabel')}</p>
         <label className="inline-flex shrink-0 items-center gap-2 text-sm">
@@ -58,7 +58,7 @@ export function ApplyTargets({
         </label>
       </div>
 
-      <ul className="flex max-h-36 min-h-0 [scrollbar-width:none] flex-wrap gap-2 overflow-y-auto [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      <ul className="flex max-h-36 min-h-0 [scrollbar-width:none] flex-wrap gap-1.5 overflow-y-auto [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {routers.map((router) => {
           const isChecked = selectedIds.includes(router.id);
           const isOnline = healthById[router.id]?.online;
@@ -83,7 +83,7 @@ export function ApplyTargets({
             <li key={router.id} className="max-w-full">
               <label
                 className={cn(
-                  'flex cursor-pointer items-center gap-2 rounded-md border border-transparent px-2 py-1.5 text-sm hover:bg-accent',
+                  'flex cursor-pointer items-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm hover:bg-accent',
                   isChecked && 'border-border bg-secondary/60',
                 )}
               >

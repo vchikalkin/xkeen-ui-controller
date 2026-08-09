@@ -14,7 +14,7 @@ export function LocaleSwitcher() {
   return (
     <nav
       aria-label={t('label')}
-      className="flex gap-1 rounded-full border border-border bg-background/90 p-1 text-sm shadow-sm backdrop-blur"
+      className="flex gap-1 rounded-lg border border-border bg-background/90 p-[3px] text-sm shadow-xs backdrop-blur"
     >
       {routing.locales.map((nextLocale) => {
         const isActive = locale === nextLocale;
@@ -30,7 +30,6 @@ export function LocaleSwitcher() {
                 size: 'sm',
                 variant: isActive ? 'default' : 'ghost',
               }),
-              'rounded-full',
             )}
           >
             {t(nextLocale)}

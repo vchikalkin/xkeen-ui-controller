@@ -35,7 +35,7 @@ export function RouterTabs({
       scrollLabelNext={t('scrollNext')}
       trailing={
         <Button size="sm" variant="outline" className="shrink-0" onClick={onAdd}>
-          <Plus aria-hidden className="size-4" />
+          <Plus aria-hidden />
           {t('addRouter')}
         </Button>
       }
@@ -43,17 +43,17 @@ export function RouterTabs({
       <div
         role="tablist"
         aria-label={t('tabsLabel')}
-        className="flex w-max items-center gap-1"
+        className="flex w-max items-center gap-1.5"
       >
         <button
           type="button"
           role="tab"
           aria-selected={activeTab === GLOBAL_TAB}
           className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap transition-colors',
+            'inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-sm font-medium whitespace-nowrap transition-all',
             activeTab === GLOBAL_TAB
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-secondary text-secondary-foreground hover:bg-accent',
+              ? 'border-border bg-background text-foreground shadow-sm'
+              : 'border-transparent bg-muted text-muted-foreground hover:bg-accent hover:text-foreground',
           )}
           onClick={() => {
             onChange(GLOBAL_TAB);
@@ -69,16 +69,24 @@ export function RouterTabs({
           const isSelected = activeTab === router.id;
 
           return (
-            <div key={router.id} className="flex shrink-0 items-center">
+            <div
+              key={router.id}
+              className={cn(
+                'flex shrink-0 items-center overflow-hidden rounded-md border',
+                isSelected
+                  ? 'border-border bg-background shadow-sm'
+                  : 'border-transparent bg-muted',
+              )}
+            >
               <button
                 type="button"
                 role="tab"
                 aria-selected={isSelected}
                 className={cn(
-                  'inline-flex h-9 max-w-48 items-center gap-2 rounded-l-md px-3 text-sm font-medium transition-colors',
+                  'inline-flex h-8 max-w-48 items-center gap-1.5 px-2.5 text-sm font-medium transition-colors',
                   isSelected
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-secondary text-secondary-foreground hover:bg-accent',
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground',
                 )}
                 onClick={() => {
                   onChange(router.id);
@@ -96,13 +104,10 @@ export function RouterTabs({
                 <span className="truncate tabular-nums">{label}</span>
               </button>
               <Button
-                size="icon"
-                variant={isSelected ? 'default' : 'secondary'}
+                size="icon-sm"
+                variant="ghost"
                 aria-label={t('removeRouter', { name: label })}
-                className={cn(
-                  'h-9 w-8 rounded-l-none rounded-r-md border-l border-border/40',
-                  isSelected && 'border-primary-foreground/20',
-                )}
+                className="size-8 rounded-none border-l border-border/50 hover:bg-accent"
                 onClick={() => {
                   onRemove(router.id);
                 }}

@@ -121,7 +121,7 @@ export function HorizontalScroll({
     <div className={cn('flex min-w-0 items-center gap-1', className)} {...props}>
       {shouldShowControls ? (
         <Button
-          size="icon"
+          size="icon-sm"
           variant="ghost"
           disabled={!canPrev}
           aria-label={scrollLabelPrev}
@@ -133,7 +133,7 @@ export function HorizontalScroll({
             });
           }}
         >
-          <ChevronLeft aria-hidden className="size-4" />
+          <ChevronLeft aria-hidden />
         </Button>
       ) : null}
 
@@ -150,7 +150,7 @@ export function HorizontalScroll({
 
       {shouldShowControls ? (
         <Button
-          size="icon"
+          size="icon-sm"
           variant="ghost"
           disabled={!canNext}
           aria-label={scrollLabelNext}
@@ -162,7 +162,7 @@ export function HorizontalScroll({
             });
           }}
         >
-          <ChevronRight aria-hidden className="size-4" />
+          <ChevronRight aria-hidden />
         </Button>
       ) : null}
 

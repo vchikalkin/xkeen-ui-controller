@@ -63,7 +63,7 @@ export function AlertDialog({
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
       className={cn(
-        'fixed top-1/2 left-1/2 z-50 m-0 w-[min(100%-2rem,28rem)] -translate-1/2 rounded-lg border border-border bg-card p-0 text-card-foreground shadow-lg backdrop:bg-black/40',
+        'fixed top-1/2 left-1/2 z-50 m-0 grid w-[min(100%-2rem,28rem)] -translate-1/2 gap-6 rounded-xl border border-border bg-card p-5 text-sm text-card-foreground shadow-lg outline-none backdrop:bg-black/40',
       )}
       onClose={onCancel}
       onCancel={(event) => {
@@ -74,33 +74,31 @@ export function AlertDialog({
         }
       }}
     >
-      <div className="flex flex-col gap-4 p-6">
-        <div className="flex flex-col gap-2">
-          <h2 id={titleId} className="text-lg font-semibold text-balance">
-            {title}
-          </h2>
-          {description ? (
-            <div
-              id={descriptionId}
-              className="text-sm text-pretty text-muted-foreground"
-            >
-              {description}
-            </div>
-          ) : null}
-          {children}
-        </div>
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" disabled={isBusy} onClick={onCancel}>
-            {cancelLabel}
-          </Button>
-          <Button
-            variant={confirmVariant}
-            disabled={isBusy}
-            onClick={onConfirm}
+      <div className="flex flex-col gap-2">
+        <h2 id={titleId} className="text-xl leading-none font-semibold tracking-tight text-balance">
+          {title}
+        </h2>
+        {description ? (
+          <div
+            id={descriptionId}
+            className="text-sm text-pretty text-muted-foreground"
           >
-            {confirmLabel}
-          </Button>
-        </div>
+            {description}
+          </div>
+        ) : null}
+        {children}
+      </div>
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <Button variant="outline" disabled={isBusy} onClick={onCancel}>
+          {cancelLabel}
+        </Button>
+        <Button
+          variant={confirmVariant}
+          disabled={isBusy}
+          onClick={onConfirm}
+        >
+          {confirmLabel}
+        </Button>
       </div>
     </dialog>
   );

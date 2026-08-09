@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useSyncExternalStore } from 'react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 type ThemeOption = 'light' | 'dark' | 'system';
 
@@ -96,18 +95,14 @@ export function ThemeSwitcher() {
   );
 
   const shellClassName =
-    'flex gap-1 rounded-full border border-border bg-background/90 p-1 text-sm shadow-sm backdrop-blur';
+    'flex gap-1 rounded-lg border border-border bg-background/90 p-[3px] text-sm shadow-xs backdrop-blur';
 
   if (!isMounted) {
     return (
       <nav aria-label={t('label')} className={shellClassName}>
-        {themeOptions.map((option) => 
-          { return <span
-            key={option}
-            className="size-10 rounded-full"
-            aria-hidden="true"
-          /> }
-        )}
+        {themeOptions.map((option) => (
+          <span key={option} className="size-8 rounded-md" aria-hidden="true" />
+        ))}
       </nav>
     );
   }
@@ -122,11 +117,10 @@ export function ThemeSwitcher() {
         return (
           <Button
             key={option}
-            size="icon"
+            size="icon-sm"
             variant={isActive ? 'default' : 'ghost'}
             aria-label={t(option)}
             aria-pressed={isActive}
-            className={cn('rounded-full')}
             onClick={() => {
               setTheme(option);
             }}

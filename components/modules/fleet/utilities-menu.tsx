@@ -71,7 +71,7 @@ export function UtilitiesMenu({
             type="button"
             role="menuitem"
             disabled={isBackupDisabled}
-            className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+            className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
             onClick={() => {
               setIsOpen(false);
               onBackup();

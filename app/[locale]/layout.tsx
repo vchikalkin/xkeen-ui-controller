@@ -28,14 +28,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <SetHtmlLang locale={locale} />
-      <div className="flex min-h-0 flex-1 flex-col bg-zinc-100 dark:bg-background">
-        <div className="shrink-0 border-b border-border bg-background">
-          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-2 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] md:px-6">
-            <h1 className="truncate text-lg font-semibold tracking-tight">
-              {t('title')}
-            </h1>
-            <SiteControls />
-          </div>
+      <div className="flex min-h-0 flex-1 flex-col bg-muted dark:bg-background">
+        <div className="mx-auto flex w-full max-w-7xl shrink-0 items-center justify-between gap-1.5 px-3 pt-[max(0.75rem,env(safe-area-inset-top))] pr-[max(0.75rem,env(safe-area-inset-right))] pb-0">
+          <h1 className="truncate text-lg font-semibold select-none">
+            {t('title')}
+          </h1>
+          <SiteControls />
         </div>
         <div className="flex min-h-0 flex-1 flex-col">{children}</div>
       </div>

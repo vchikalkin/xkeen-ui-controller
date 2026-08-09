@@ -47,14 +47,14 @@ function ignorePromise(promise: Promise<unknown>): undefined {
 
 function footerStatusClassName(tone: FooterStatusTone): string {
   if (tone === 'ok') {
-    return 'text-sm text-emerald-600 dark:text-emerald-400';
+    return 'min-w-0 text-xs text-emerald-600 dark:text-emerald-400';
   }
 
   if (tone === 'error') {
-    return 'text-sm text-destructive';
+    return 'min-w-0 text-xs text-destructive';
   }
 
-  return 'text-sm text-muted-foreground';
+  return 'min-w-0 text-xs text-muted-foreground';
 }
 
 export function FleetPage() {
@@ -378,9 +378,9 @@ export function FleetPage() {
   const isBackupDisabled = isBusy || isLoading || targetRouters.length === 0;
 
   return (
-    <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col overflow-hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6">
-      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden rounded-xl border border-border bg-background p-4 shadow-sm md:p-5">
-        <div className="shrink-0">
+    <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col gap-3 overflow-hidden p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card">
+        <div className="shrink-0 p-3 sm:px-4 sm:pt-4">
           <RouterTabs
             routers={routers}
             activeTab={activeTab}
@@ -419,12 +419,12 @@ export function FleetPage() {
 
         <div className="relative min-h-48 flex-1 overflow-hidden">
           {isLoading ? (
-            <div className="absolute inset-0 z-10 animate-pulse rounded-md border border-border bg-secondary/60" />
+            <div className="absolute inset-0 z-10 animate-pulse bg-secondary/60" />
           ) : null}
           <div className="absolute inset-0">
             <YamlEditor
               ref={editorRef}
-              className="h-full"
+              className="h-full rounded-none border-x-0 border-y border-border"
               placeholderText={t('editorPlaceholder')}
               onChange={(value, nextIsValid) => {
                 setContent(value);
@@ -439,7 +439,7 @@ export function FleetPage() {
         </div>
 
         {isGlobal ? (
-          <div className="shrink-0">
+          <div className="shrink-0 px-3 pt-3 sm:px-4">
             <ApplyTargets
               routers={routers}
               selectedIds={selectedIds}
@@ -451,13 +451,15 @@ export function FleetPage() {
           </div>
         ) : null}
 
-        <div className="flex shrink-0 flex-col gap-3 border-t border-border pt-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-1.5 p-3 sm:px-4 sm:pb-4">
           {footerStatus ? (
             <p className={footerStatusClassName(footerStatus.tone)}>
               {footerStatus.text}
             </p>
-          ) : null}
-          <div className="flex flex-wrap items-center gap-2 sm:ml-auto sm:justify-end">
+          ) : (
+            <span className="min-w-0" />
+          )}
+          <div className="flex flex-wrap items-center gap-1.5 sm:ml-auto sm:justify-end">
             <Button
               variant="outline"
               disabled={areActionsDisabled}
@@ -465,7 +467,7 @@ export function FleetPage() {
                 ignorePromise(runMode('save'));
               }}
             >
-              <Save aria-hidden className="size-4" />
+              <Save aria-hidden />
               {t('save')}
             </Button>
             <Button
@@ -474,7 +476,7 @@ export function FleetPage() {
                 setIsApplyConfirmOpen(true);
               }}
             >
-              <Rocket aria-hidden className="size-4" />
+              <Rocket aria-hidden />
               {isGlobal ? t('applySelected') : t('apply')}
             </Button>
             <UtilitiesMenu
