@@ -33,6 +33,17 @@ export async function POST(request: Request) {
       return jsonError('Router already exists', { status: 409 });
     }
 
+    console.error('Failed to add router', error);
+
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 'EACCES'
+    ) {
+      return jsonError('Data directory is not writable', { status: 500 });
+    }
+
     return jsonError('Failed to add router', { status: 500 });
   }
 }

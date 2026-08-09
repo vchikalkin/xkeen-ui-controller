@@ -23,14 +23,19 @@ ENV XKEEN_UI_PORT=1000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
-RUN mkdir -p /data && chown nextjs:nodejs /data
+RUN apk add --no-cache su-exec \
+  && addgroup -S nodejs \
+  && adduser -S nextjs -G nodejs \
+  && mkdir -p /data \
+  && chown nextjs:nodejs /data
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-USER nextjs
 EXPOSE 3000
 VOLUME ["/data"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["node", "server.js"]
