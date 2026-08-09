@@ -34,6 +34,7 @@
     "save": "Save",
     "apply": "Apply",
     "applySelected": "Apply to selected",
+    "utilities": "Utilities",
     "backup": "Backup",
     "backupSelected": "Backup selected",
     "noTargets": "Select at least one router",

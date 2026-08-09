@@ -1,6 +1,6 @@
 'use client';
 
-import { Archive, Rocket, Save } from 'lucide-react';
+import { Rocket, Save } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertDialog } from '@/components/ui/alert-dialog';
@@ -26,6 +26,7 @@ import { AddRouterDialog } from './add-router-dialog';
 import { ApplyTargets } from './apply-targets';
 import { ConfirmApplyModal } from './confirm-apply-modal';
 import { type FleetTab, RouterTabs } from './router-tabs';
+import { UtilitiesMenu } from './utilities-menu';
 import { YamlEditor, type YamlEditorHandle } from './yaml-editor';
 
 const HEALTH_POLL_MS = 8000;
@@ -470,7 +471,12 @@ export function FleetPage() {
         ) : null}
 
         <div className="flex shrink-0 flex-col gap-3 border-t border-border pt-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap gap-2">
+          {footerStatus ? (
+            <p className={footerStatusClassName(footerStatus.tone)}>
+              {footerStatus.text}
+            </p>
+          ) : null}
+          <div className="flex flex-wrap items-center gap-2 sm:ml-auto sm:justify-end">
             <Button
               variant="outline"
               disabled={areActionsDisabled}
@@ -490,22 +496,15 @@ export function FleetPage() {
               <Rocket aria-hidden className="size-4" />
               {isGlobal ? t('applySelected') : t('apply')}
             </Button>
-            <Button
-              variant="outline"
-              disabled={isBackupDisabled}
-              onClick={() => {
+            <UtilitiesMenu
+              utilitiesLabel={t('utilities')}
+              backupLabel={isGlobal ? t('backupSelected') : t('backup')}
+              isBackupDisabled={isBackupDisabled}
+              onBackup={() => {
                 ignorePromise(runBackup());
               }}
-            >
-              <Archive aria-hidden className="size-4" />
-              {isGlobal ? t('backupSelected') : t('backup')}
-            </Button>
+            />
           </div>
-          {footerStatus ? (
-            <p className={footerStatusClassName(footerStatus.tone)}>
-              {footerStatus.text}
-            </p>
-          ) : null}
         </div>
       </div>
 
