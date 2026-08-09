@@ -25,6 +25,8 @@
     "globalTab": "Global",
     "addRouter": "Add",
     "removeRouter": "Remove router {name}",
+    "scrollPrev": "Scroll left",
+    "scrollNext": "Scroll right",
     "targetsLabel": "Apply to routers",
     "selectAll": "Select all",
     "noRoutersForTargets": "Add a router to choose apply targets.",

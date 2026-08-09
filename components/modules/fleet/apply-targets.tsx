@@ -43,9 +43,9 @@ export function ApplyTargets({
 
   return (
     <div className="flex flex-col gap-3 rounded-md border border-border bg-card p-3">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex shrink-0 items-center justify-between gap-3">
         <p className="text-sm font-medium">{t('targetsLabel')}</p>
-        <label className="inline-flex items-center gap-2 text-sm">
+        <label className="inline-flex shrink-0 items-center gap-2 text-sm">
           <Checkbox
             checked={isAllSelected}
             onChange={(event) => {
@@ -58,7 +58,7 @@ export function ApplyTargets({
         </label>
       </div>
 
-      <ul className="grid gap-2 sm:grid-cols-2">
+      <ul className="flex max-h-36 min-h-0 [scrollbar-width:none] flex-wrap gap-2 overflow-y-auto [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {routers.map((router) => {
           const isChecked = selectedIds.includes(router.id);
           const isOnline = healthById[router.id]?.online;
@@ -78,7 +78,7 @@ export function ApplyTargets({
           }
 
           return (
-            <li key={router.id}>
+            <li key={router.id} className="max-w-full">
               <label
                 className={cn(
                   'flex cursor-pointer items-center gap-2 rounded-md border border-transparent px-2 py-1.5 text-sm hover:bg-accent',
@@ -104,9 +104,7 @@ export function ApplyTargets({
                     isOnline ? 'bg-emerald-500' : 'bg-zinc-400',
                   )}
                 />
-                <span className="min-w-0 flex-1 truncate tabular-nums">
-                  {label}
-                </span>
+                <span className="max-w-36 truncate tabular-nums">{label}</span>
                 {statusLabel ? (
                   <span
                     title={statusLabel}

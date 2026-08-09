@@ -350,7 +350,7 @@ export function FleetPage() {
         </div>
 
         {isGlobal ? (
-          <div className="max-h-36 shrink-0 overflow-y-auto">
+          <div className="shrink-0">
             <ApplyTargets
               routers={routers}
               selectedIds={selectedIds}

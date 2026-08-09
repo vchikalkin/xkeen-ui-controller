@@ -3,6 +3,7 @@
 import { Globe, Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
+import { HorizontalScroll } from '@/components/ui/horizontal-scroll';
 import { GLOBAL_TAB } from '@/lib/fleet-constants';
 import type { HealthStatus, Router } from '@/lib/types/router';
 import { cn } from '@/lib/utils';
@@ -29,11 +30,20 @@ export function RouterTabs({
   const t = useTranslations('Fleet');
 
   return (
-    <div className="flex items-center gap-2 overflow-x-auto pb-1">
+    <HorizontalScroll
+      scrollLabelPrev={t('scrollPrev')}
+      scrollLabelNext={t('scrollNext')}
+      trailing={
+        <Button size="sm" variant="outline" className="shrink-0" onClick={onAdd}>
+          <Plus aria-hidden className="size-4" />
+          {t('addRouter')}
+        </Button>
+      }
+    >
       <div
         role="tablist"
         aria-label={t('tabsLabel')}
-        className="flex min-w-0 flex-1 items-center gap-1"
+        className="flex w-max items-center gap-1"
       >
         <button
           type="button"
@@ -59,7 +69,7 @@ export function RouterTabs({
           const isSelected = activeTab === router.id;
 
           return (
-            <div key={router.id} className="flex items-center">
+            <div key={router.id} className="flex shrink-0 items-center">
               <button
                 type="button"
                 role="tab"
@@ -103,11 +113,6 @@ export function RouterTabs({
           );
         })}
       </div>
-
-      <Button size="sm" variant="outline" className="shrink-0" onClick={onAdd}>
-        <Plus aria-hidden className="size-4" />
-        {t('addRouter')}
-      </Button>
-    </div>
+    </HorizontalScroll>
   );
 }

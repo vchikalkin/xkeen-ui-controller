@@ -25,6 +25,8 @@
     "globalTab": "Глобальный",
     "addRouter": "Добавить",
     "removeRouter": "Удалить роутер {name}",
+    "scrollPrev": "Прокрутить влево",
+    "scrollNext": "Прокрутить вправо",
     "targetsLabel": "Применить к роутерам",
     "selectAll": "Выбрать все",
     "noRoutersForTargets": "Добавьте роутер, чтобы выбрать цели применения.",
