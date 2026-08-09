@@ -1,0 +1,13 @@
+---
+description: next-intl conventions for locales, messages, and localized routes
+globs: "{messages,i18n,app}/**"
+alwaysApply: false
+---
+
+# i18n
+
+- Never hardcode user-facing strings in components or pages
+- Add every new string to **both** `messages/en.json` and `messages/ru.json`
+- Use next-intl APIs (`useTranslations`, `getTranslations`) — match patterns in existing pages
+- Locale routing lives under `app/[locale]/`; config in `i18n/`
+- Error messages shown to users must use i18n keys, not raw server errors

@@ -1,0 +1,29 @@
+{
+  "HomePage": {
+    "title": "Чтобы начать, отредактируйте page.tsx",
+    "descriptionPrefix": "Ищете отправную точку или инструкции? Загляните в",
+    "descriptionMiddle": "или в",
+    "descriptionSuffix": ".",
+    "templates": "Шаблоны",
+    "learning": "Обучение",
+    "deploy": "Деплой",
+    "docs": "Документация",
+    "badge": "Boilerplate",
+    "mdx": "MDX"
+  },
+  "MdxPage": {
+    "title": "Пример MDX",
+    "back": "На главную"
+  },
+  "LocaleSwitcher": {
+    "label": "Язык",
+    "ru": "Русский",
+    "en": "English"
+  },
+  "ThemeSwitcher": {
+    "label": "Тема",
+    "light": "Светлая тема",
+    "dark": "Тёмная тема",
+    "system": "Системная тема"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "HomePage": {
+    "title": "To get started, edit the page.tsx file.",
+    "descriptionPrefix": "Looking for a starting point or more instructions? Head over to",
+    "descriptionMiddle": "or the",
+    "descriptionSuffix": " center.",
+    "templates": "Templates",
+    "learning": "Learning",
+    "deploy": "Deploy Now",
+    "docs": "Documentation",
+    "badge": "Boilerplate",
+    "mdx": "MDX"
+  },
+  "MdxPage": {
+    "title": "MDX example",
+    "back": "Back home"
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "ru": "Русский",
+    "en": "English"
+  },
+  "ThemeSwitcher": {
+    "label": "Theme",
+    "light": "Light theme",
+    "dark": "Dark theme",
+    "system": "System theme"
+  }
+}

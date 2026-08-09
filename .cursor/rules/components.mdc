@@ -1,0 +1,21 @@
+---
+description: Component structure, splitting, and folder conventions
+globs: components/**
+alwaysApply: false
+---
+
+# Components
+
+## Folders
+- `components/ui/` — reusable atomic primitives only
+- `components/sections/` or `components/modules/` — large page blocks
+- Page-specific pieces — subfolders under `components/`, not inline in `app/`
+
+## Size & structure
+- Split files past ~120 lines into smaller subcomponents
+- Reusable pieces → `ui/`; page-specific pieces → named subfolders
+- Follow existing patterns in `components/ui/button.tsx` and `badge.tsx` for cva + `cn`
+
+## Custom vs library
+- Trivial UI → build in `ui/` or `sections/` without new dependencies
+- Complex third-party UI (shadcn, Magic UI, etc.) → use the `add-ui-library` skill
