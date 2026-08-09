@@ -8,7 +8,9 @@ const isStaticExport = process.env.STATIC_EXPORT === 'true';
 const withNextIntl = createNextIntlPlugin();
 
 const baseConfig: NextConfig = {
-  ...(isStaticExport ? { output: 'export' as const } : {}),
+  ...(isStaticExport
+    ? { output: 'export' as const }
+    : { output: 'standalone' as const }),
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
     formats: ['image/webp'],

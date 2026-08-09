@@ -1,0 +1,12 @@
+services:
+  mihomo-x-manager:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      DATA_DIR: /data
+      MIHOMO_CONFIG_PATH: /opt/etc/mihomo/config.yaml
+      XKEEN_UI_PORT: '1000'
+    volumes:
+      - /config/mihomo-x-manager:/data
+    restart: unless-stopped
