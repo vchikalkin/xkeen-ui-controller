@@ -32,8 +32,6 @@
     "save": "Save",
     "apply": "Apply",
     "applySelected": "Apply to selected",
-    "unsavedChanges": "Unsaved changes",
-    "inSync": "Draft in sync",
     "noTargets": "Select at least one router",
     "invalidYaml": "Fix YAML errors first",
     "partialFailure": "Some routers failed",

@@ -250,10 +250,7 @@ export function FleetPage() {
   );
   const isActiveRouterPending = pendingIds.includes(activeTab);
 
-  let footerStatus: FooterStatus = {
-    text: isDirty ? t('unsavedChanges') : t('inSync'),
-    tone: 'muted',
-  };
+  let footerStatus: FooterStatus | null = null;
 
   if (actionError) {
     footerStatus = { text: actionError, tone: 'error' };
@@ -272,6 +269,9 @@ export function FleetPage() {
       tone: 'error',
     };
   }
+
+  const areActionsDisabled =
+    isBusy || isLoading || !isDirty || !isValid || targetRouters.length === 0;
 
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col overflow-hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6">
@@ -366,9 +366,7 @@ export function FleetPage() {
           <div className="flex flex-wrap gap-2">
             <Button
               variant="outline"
-              disabled={
-                isBusy || isLoading || !isValid || targetRouters.length === 0
-              }
+              disabled={areActionsDisabled}
               onClick={() => {
                 ignorePromise(runMode('save'));
               }}
@@ -377,9 +375,7 @@ export function FleetPage() {
               {t('save')}
             </Button>
             <Button
-              disabled={
-                isBusy || isLoading || !isValid || targetRouters.length === 0
-              }
+              disabled={areActionsDisabled}
               onClick={() => {
                 setIsApplyConfirmOpen(true);
               }}
@@ -388,9 +384,11 @@ export function FleetPage() {
               {isGlobal ? t('applySelected') : t('apply')}
             </Button>
           </div>
-          <p className={footerStatusClassName(footerStatus.tone)}>
-            {footerStatus.text}
-          </p>
+          {footerStatus ? (
+            <p className={footerStatusClassName(footerStatus.tone)}>
+              {footerStatus.text}
+            </p>
+          ) : null}
         </div>
       </div>
 
