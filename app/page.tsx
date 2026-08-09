@@ -10,7 +10,7 @@ export default function RootPage() {
 
   return (
     <main className="flex flex-1 items-center justify-center">
-      <p className="text-zinc-600 dark:text-zinc-400">Redirecting…</p>
+      <p className="text-muted-foreground">Redirecting…</p>
     </main>
   );
 }

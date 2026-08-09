@@ -53,7 +53,7 @@ function footerStatusClassName(tone: FooterStatusTone): string {
     return 'text-sm text-destructive';
   }
 
-  return 'text-sm text-zinc-500';
+  return 'text-sm text-muted-foreground';
 }
 
 export function FleetPage() {
@@ -386,11 +386,11 @@ export function FleetPage() {
         <header className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-semibold text-balance">{t('title')}</h1>
-            <p className="text-sm text-pretty text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm text-pretty text-muted-foreground">
               {t('subtitle')}
             </p>
           </div>
-          <p className="text-sm text-zinc-600 tabular-nums dark:text-zinc-400">
+          <p className="text-sm text-muted-foreground tabular-nums">
             {t('onlineSummary', {
               online: onlineCount,
               total: routers.length,

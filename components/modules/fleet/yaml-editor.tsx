@@ -74,6 +74,45 @@ const lightEditorTheme = EditorView.theme({
   },
 });
 
+/** Deepens oneDark chrome so the editor sits darker than the UI shell. */
+const darkEditorSurface = EditorView.theme(
+  {
+    '&': {
+      backgroundColor: '#0c0c0e',
+      color: '#e4e4e7',
+    },
+    '.cm-scroller': {
+      backgroundColor: '#0c0c0e',
+    },
+    '.cm-content': {
+      caretColor: '#e4e4e7',
+    },
+    '&.cm-focused .cm-cursor': {
+      borderLeftColor: '#e4e4e7',
+    },
+    '.cm-gutters': {
+      backgroundColor: '#27272a',
+      color: '#a1a1aa',
+      borderRight: '1px solid #3f3f46',
+    },
+    '.cm-activeLineGutter': {
+      backgroundColor: '#3f3f46',
+    },
+    '.cm-activeLine': {
+      backgroundColor: '#141416',
+    },
+    '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': {
+      backgroundColor: '#27272a !important',
+    },
+    '.cm-selectionMatch': {
+      backgroundColor: '#27272a88',
+    },
+  },
+  { dark: true },
+);
+
+const darkEditorTheme = [oneDark, darkEditorSurface];
+
 function createYamlLinter({ onValidityChange }: LinterOptions) {
   return linter((view) => {
     const text = view.state.doc.toString();
@@ -206,7 +245,7 @@ function YamlEditorInner(
           }
         }),
         baseEditorTheme,
-        themeCompartment.of(isDark ? oneDark : lightEditorTheme),
+        themeCompartment.of(isDark ? darkEditorTheme : lightEditorTheme),
       ],
     });
 
@@ -234,7 +273,7 @@ function YamlEditorInner(
 
     view.dispatch({
       effects: themeCompartmentRef.current.reconfigure(
-        isDark ? oneDark : lightEditorTheme,
+        isDark ? darkEditorTheme : lightEditorTheme,
       ),
     });
   }, [isDark]);
@@ -243,7 +282,7 @@ function YamlEditorInner(
     <div
       ref={parentRef}
       className={cn(
-        'size-full min-h-0 overflow-hidden rounded-md border border-border bg-card [&_.cm-editor]:h-full [&_.cm-editor]:max-h-full',
+        'size-full min-h-0 overflow-hidden rounded-md border border-border bg-card dark:bg-[#0c0c0e] [&_.cm-editor]:h-full [&_.cm-editor]:max-h-full',
         className,
       )}
     />

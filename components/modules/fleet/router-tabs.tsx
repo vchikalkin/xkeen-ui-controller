@@ -89,8 +89,8 @@ export function RouterTabs({
                   className={cn(
                     'size-2 shrink-0 rounded-full',
                     isOnline === true && 'bg-emerald-500',
-                    isOnline === false && 'bg-zinc-400',
-                    isOnline === undefined && 'bg-zinc-300 dark:bg-zinc-600',
+                    isOnline === false && 'bg-muted-foreground/50',
+                    isOnline === undefined && 'bg-muted-foreground/30',
                   )}
                 />
                 <span className="truncate tabular-nums">{label}</span>

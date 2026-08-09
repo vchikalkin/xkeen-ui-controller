@@ -12,11 +12,14 @@
   --primary-foreground: #fafafa;
   --secondary: #f4f4f5;
   --secondary-foreground: #171717;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
   --accent: #f4f4f5;
   --accent-foreground: #171717;
   --destructive: #ef4444;
   --destructive-foreground: #fafafa;
   --border: #e4e4e7;
+  --input: #e4e4e7;
   --ring: #171717;
 }
 
@@ -29,11 +32,14 @@
   --primary-foreground: #171717;
   --secondary: #27272a;
   --secondary-foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
   --accent: #27272a;
   --accent-foreground: #fafafa;
   --destructive: #7f1d1d;
   --destructive-foreground: #fafafa;
   --border: #27272a;
+  --input: #27272a;
   --ring: #d4d4d8;
 }
 
@@ -46,11 +52,14 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-input: var(--input);
   --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -72,4 +81,18 @@ body {
 
 .cm-editor.cm-focused {
   outline: none;
+}
+
+.dark .cm-editor .cm-gutters {
+  background-color: #27272a !important;
+  color: #a1a1aa !important;
+  border-right: 1px solid #3f3f46 !important;
+}
+
+.dark .cm-editor .cm-activeLineGutter {
+  background-color: #3f3f46 !important;
+}
+
+.dark .cm-editor .cm-gutterElement {
+  color: #a1a1aa;
 }

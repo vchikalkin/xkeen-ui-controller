@@ -35,7 +35,7 @@ export function ApplyTargets({
 
   if (routers.length === 0) {
     return (
-      <p className="text-sm text-pretty text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-pretty text-muted-foreground">
         {t('noRoutersForTargets')}
       </p>
     );
@@ -103,7 +103,7 @@ export function ApplyTargets({
                   aria-hidden
                   className={cn(
                     'size-2 shrink-0 rounded-full',
-                    isOnline ? 'bg-emerald-500' : 'bg-zinc-400',
+                    isOnline ? 'bg-emerald-500' : 'bg-muted-foreground/50',
                   )}
                 />
                 <span className="max-w-36 truncate tabular-nums">{label}</span>
@@ -112,7 +112,7 @@ export function ApplyTargets({
                     title={statusLabel}
                     className={cn(
                       'max-w-40 shrink-0 truncate text-xs tabular-nums',
-                      isPending && 'text-zinc-500',
+                      isPending && 'text-muted-foreground',
                       result?.ok && 'text-emerald-600 dark:text-emerald-400',
                       result && !result.ok && 'text-destructive',
                     )}

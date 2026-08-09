@@ -82,7 +82,7 @@ export function AlertDialog({
           {description ? (
             <div
               id={descriptionId}
-              className="text-sm text-pretty text-zinc-600 dark:text-zinc-400"
+              className="text-sm text-pretty text-muted-foreground"
             >
               {description}
             </div>
