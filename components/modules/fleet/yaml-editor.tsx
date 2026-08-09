@@ -13,7 +13,11 @@ import {
 import { indentWithTab } from '@codemirror/commands';
 import { yaml } from '@codemirror/lang-yaml';
 import { linter, lintGutter } from '@codemirror/lint';
-import { Compartment, EditorState } from '@codemirror/state';
+import {
+  Compartment,
+  EditorSelection,
+  EditorState,
+} from '@codemirror/state';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { EditorView, keymap, lineNumbers, placeholder } from '@codemirror/view';
 import { cn } from '@/lib/utils';
@@ -23,6 +27,7 @@ export interface YamlEditorHandle {
   setValue: (value: string) => void;
   focus: () => void;
   isValid: () => boolean;
+  format: () => Promise<void>;
 }
 
 interface YamlEditorProps {
@@ -205,6 +210,54 @@ function YamlEditorInner(
         viewRef.current?.focus();
       },
       isValid: () => isValidRef.current,
+      format: async () => {
+        const view = viewRef.current;
+
+        if (!view || !isValidRef.current) {
+          return;
+        }
+
+        const content = view.state.doc.toString();
+
+        if (!content.trim()) {
+          return;
+        }
+
+        try {
+          const [prettier, prettierYaml] = await Promise.all([
+            import('prettier'),
+            import('prettier/plugins/yaml'),
+          ]);
+          const cursorOffset = view.state.selection.main.head;
+          const result = await prettier.formatWithCursor(content, {
+            cursorOffset,
+            parser: 'yaml',
+            plugins: [prettierYaml],
+            printWidth: 200,
+            tabWidth: 2,
+            singleQuote: true,
+            endOfLine: 'lf',
+          });
+
+          if (result.formatted === content) {
+            return;
+          }
+
+          view.dispatch({
+            changes: {
+              from: 0,
+              to: view.state.doc.length,
+              insert: result.formatted,
+            },
+            selection: EditorSelection.cursor(
+              Math.min(result.cursorOffset, result.formatted.length),
+            ),
+            scrollIntoView: true,
+          });
+        } catch {
+          // Invalid or unsupported YAML — keep the editor unchanged.
+        }
+      },
     };
   });
 

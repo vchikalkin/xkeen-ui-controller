@@ -29,6 +29,7 @@
     "noRoutersForTargets": "Add a router to choose apply targets.",
     "editorPlaceholder": "Paste your mihomo YAML config…",
     "save": "Save",
+    "format": "Format",
     "apply": "Apply",
     "applySelected": "Apply to selected",
     "utilities": "Utilities",

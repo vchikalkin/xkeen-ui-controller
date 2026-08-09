@@ -29,6 +29,7 @@
     "noRoutersForTargets": "Добавьте роутер, чтобы выбрать цели применения.",
     "editorPlaceholder": "Вставьте YAML-конфиг mihomo…",
     "save": "Сохранить",
+    "format": "Формат",
     "apply": "Применить",
     "applySelected": "Применить выбранным",
     "utilities": "Утилиты",

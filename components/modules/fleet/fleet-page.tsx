@@ -1,6 +1,6 @@
 'use client';
 
-import { Rocket, Save } from 'lucide-react';
+import { Code, Rocket, Save } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertDialog } from '@/components/ui/alert-dialog';
@@ -478,6 +478,22 @@ export function FleetPage() {
             >
               <Save aria-hidden />
               {t('save')}
+            </Button>
+            <Button
+              variant="outline"
+              disabled={isBusy || isLoading || !isValid}
+              onClick={() => {
+                const editor = editorRef.current;
+
+                if (!editor) {
+                  return;
+                }
+
+                ignorePromise(editor.format());
+              }}
+            >
+              <Code aria-hidden />
+              {t('format')}
             </Button>
             <UtilitiesMenu
               utilitiesLabel={t('utilities')}
