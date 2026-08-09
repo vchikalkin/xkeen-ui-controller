@@ -382,7 +382,7 @@ export function FleetPage() {
   const isBackupDisabled = isBusy || isLoading || targetRouters.length === 0;
 
   return (
-    <div className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col overflow-hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6">
+    <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col overflow-hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6">
       <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden rounded-xl border border-border bg-background p-4 shadow-sm md:p-5">
         <header className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-1">
