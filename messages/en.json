@@ -43,7 +43,6 @@
     "removeError": "Failed to remove router",
     "addError": "Failed to add router",
     "unknownError": "Unknown error",
-    "progressTitle": "Operation status",
     "progressPending": "In progress…",
     "progressOk": "Done ({stage})",
     "progressError": "Error: {error}",

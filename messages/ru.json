@@ -43,7 +43,6 @@
     "removeError": "Не удалось удалить роутер",
     "addError": "Не удалось добавить роутер",
     "unknownError": "Неизвестная ошибка",
-    "progressTitle": "Статус операции",
     "progressPending": "В процессе…",
     "progressOk": "Готово ({stage})",
     "progressError": "Ошибка: {error}",

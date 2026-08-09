@@ -22,7 +22,6 @@ import type {
   Router,
 } from '@/lib/types/router';
 import { AddRouterDialog } from './add-router-dialog';
-import { ApplyProgress } from './apply-progress';
 import { ApplyTargets } from './apply-targets';
 import { ConfirmApplyModal } from './confirm-apply-modal';
 import { type FleetTab, RouterTabs } from './router-tabs';
@@ -31,10 +30,29 @@ import { YamlEditor, type YamlEditorHandle } from './yaml-editor';
 const HEALTH_POLL_MS = 8000;
 const DRAFT_DEBOUNCE_MS = 800;
 
+type FooterStatusTone = 'muted' | 'ok' | 'error';
+
+interface FooterStatus {
+  readonly text: string;
+  readonly tone: FooterStatusTone;
+}
+
 function ignorePromise(promise: Promise<unknown>): undefined {
   promise.catch(() => undefined);
 
   return undefined;
+}
+
+function footerStatusClassName(tone: FooterStatusTone): string {
+  if (tone === 'ok') {
+    return 'text-sm text-emerald-600 dark:text-emerald-400';
+  }
+
+  if (tone === 'error') {
+    return 'text-sm text-destructive';
+  }
+
+  return 'text-sm text-zinc-500';
 }
 
 export function FleetPage() {
@@ -227,6 +245,34 @@ export function FleetPage() {
     (router) => healthById[router.id]?.online,
   ).length;
 
+  const activeRouterResult = results.find(
+    (item) => item.routerId === activeTab,
+  );
+  const isActiveRouterPending = pendingIds.includes(activeTab);
+
+  let footerStatus: FooterStatus = {
+    text: isDirty ? t('unsavedChanges') : t('inSync'),
+    tone: 'muted',
+  };
+
+  if (actionError) {
+    footerStatus = { text: actionError, tone: 'error' };
+  } else if (!isGlobal && isActiveRouterPending) {
+    footerStatus = { text: t('progressPending'), tone: 'muted' };
+  } else if (!isGlobal && activeRouterResult?.ok) {
+    footerStatus = {
+      text: t('progressOk', { stage: activeRouterResult.stage ?? 'save' }),
+      tone: 'ok',
+    };
+  } else if (!isGlobal && activeRouterResult) {
+    footerStatus = {
+      text: t('progressError', {
+        error: activeRouterResult.error ?? t('unknownError'),
+      }),
+      tone: 'error',
+    };
+  }
+
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col overflow-hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6">
       <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden rounded-xl border border-border bg-background p-4 shadow-sm md:p-5">
@@ -309,16 +355,12 @@ export function FleetPage() {
               routers={routers}
               selectedIds={selectedIds}
               healthById={healthById}
+              results={results}
+              pendingIds={pendingIds}
               onChange={setSelectedIds}
             />
           </div>
         ) : null}
-
-        <ApplyProgress
-          routers={routers}
-          results={results}
-          pendingIds={pendingIds}
-        />
 
         <div className="flex shrink-0 flex-col gap-3 border-t border-border pt-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap gap-2">
@@ -346,13 +388,9 @@ export function FleetPage() {
               {isGlobal ? t('applySelected') : t('apply')}
             </Button>
           </div>
-          {actionError ? (
-            <p className="text-sm text-destructive">{actionError}</p>
-          ) : (
-            <p className="text-sm text-zinc-500">
-              {isDirty ? t('unsavedChanges') : t('inSync')}
-            </p>
-          )}
+          <p className={footerStatusClassName(footerStatus.tone)}>
+            {footerStatus.text}
+          </p>
         </div>
       </div>
 
