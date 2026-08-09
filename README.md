@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mihomo X Manager
 
-## Getting Started
+Веб-интерфейс для конфигов **Mihomo** на парке роутеров через **XKeen UI**. Один Global-черновик YAML, вкладки по роутерам, Save и soft-restart Mihomo.
 
-First, run the development server:
+## Возможности
+
+- Флот роутеров: добавить/удалить по IPv4 (опционально имя); список в `DATA_DIR`
+- Вкладки **Global** (общий draft) и по каждому роутеру
+- YAML-редактор с валидацией
+- **Save** пишет конфиг; **Apply** пишет и soft-restart Mihomo
+- На Global: выбор целей (online/offline); на вкладке роутера: только он
+- Utilities → Backup на выбранных роутерах
+- Health-опрос XKeen (`/api/control`): online, running, текущий core
+- Локали en/ru, тема light / dark / system
+
+Запросы к роутерам идут на `http://{ip}:{XKEEN_UI_PORT}` (порт по умолчанию `1000`). Сервер с контейнером должен видеть IP роутеров в сети.
+
+## Быстрый старт (Docker / OpenMediaVault)
+
+Нужны Docker и Docker Compose. Образ публичный: на сервере логин в Docker Hub не нужен.
+
+1. Скопируйте [`docker-compose.yml`](docker-compose.yml) на сервер.
+2. При необходимости измените порт (`3000:3000`) и путь volume (`/config/mihomo-x-manager` → свой каталог для данных).
+3. Запустите:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose pull
+docker compose up -d
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+В OpenMediaVault: **Pull**, затем **Up**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Откройте `http://<server>:3000`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Обновление
 
-## Learn More
+После публикации нового образа в Docker Hub:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker compose pull
+docker compose up -d
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Или снова **Pull** → **Up** в OMV. Тег по умолчанию: `latest`. Чтобы зафиксировать сборку, укажите например `vchikalkin/mihomo-x-manager:sha-abc1234`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Переменные окружения
 
-## Deploy on Vercel
+| Переменная | По умолчанию | Назначение |
+| --- | --- | --- |
+| `DATA_DIR` | `./data` (в контейнере `/data`) | Каталог данных менеджера (`routers.json`, draft) |
+| `MIHOMO_CONFIG_PATH` | `/opt/etc/mihomo/config.yaml` | Путь к конфигу Mihomo **на роутере** (как его видит XKeen) |
+| `XKEEN_UI_PORT` | `1000` | Порт XKeen UI на роутерах |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Локальная разработка
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm install
+pnpm dev
+```
+
+Приложение: [http://localhost:3000](http://localhost:3000).
+
+Собрать образ локально:
+
+```bash
+docker build -t mihomo-x-manager .
+```
+
+## Публикация образа (CI)
+
+GitHub Actions собирает образ и пушит в Docker Hub как `{DOCKERHUB_USERNAME}/mihomo-x-manager` (`latest` и `sha-<short>`) при push в `master` или ручном `workflow_dispatch`.
+
+Секреты репозитория (Settings → Secrets and variables → Actions):
+
+- `DOCKERHUB_USERNAME`: логин Docker Hub
+- `DOCKERHUB_TOKEN`: Access Token (Read & Write)
+
+Сделайте репозиторий образа на Docker Hub **Public**, если коллеги должны тянуть без логина.

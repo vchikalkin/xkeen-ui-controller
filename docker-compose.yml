@@ -1,6 +1,6 @@
 services:
   mihomo-x-manager:
-    build: .
+    image: vchikalkin/mihomo-x-manager:latest
     ports:
       - '3000:3000'
     environment:
