@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import type { PropsWithChildren } from 'react';
 import { SetHtmlLang } from '@/components/set-html-lang';
 import { SiteControls } from '@/components/site-controls';
@@ -23,13 +23,17 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const t = await getTranslations('HomePage');
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <SetHtmlLang locale={locale} />
       <div className="flex min-h-0 flex-1 flex-col bg-zinc-100 dark:bg-background">
         <div className="shrink-0 border-b border-border bg-background">
-          <div className="mx-auto flex w-full max-w-5xl items-center justify-end gap-2 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] md:px-6">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-2 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] md:px-6">
+            <h1 className="truncate text-lg font-semibold tracking-tight">
+              {t('title')}
+            </h1>
             <SiteControls />
           </div>
         </div>

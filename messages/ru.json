@@ -18,9 +18,6 @@
     "system": "Системная тема"
   },
   "Fleet": {
-    "title": "Mihomo X Manager",
-    "subtitle": "Управление конфигами Mihomo на роутерах через XKeen UI",
-    "onlineSummary": "Онлайн: {online}/{total}",
     "tabsLabel": "Роутеры",
     "globalTab": "Глобальный",
     "addRouter": "Добавить",

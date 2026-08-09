@@ -338,10 +338,6 @@ export function FleetPage() {
     }
   };
 
-  const onlineCount = routers.filter(
-    (router) => healthById[router.id]?.online,
-  ).length;
-
   const activeRouterResult = results.find(
     (item) => item.routerId === activeTab,
   );
@@ -384,21 +380,6 @@ export function FleetPage() {
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col overflow-hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6">
       <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden rounded-xl border border-border bg-background p-4 shadow-sm md:p-5">
-        <header className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold text-balance">{t('title')}</h1>
-            <p className="text-sm text-pretty text-muted-foreground">
-              {t('subtitle')}
-            </p>
-          </div>
-          <p className="text-sm text-muted-foreground tabular-nums">
-            {t('onlineSummary', {
-              online: onlineCount,
-              total: routers.length,
-            })}
-          </p>
-        </header>
-
         <div className="shrink-0">
           <RouterTabs
             routers={routers}

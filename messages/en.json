@@ -18,9 +18,6 @@
     "system": "System theme"
   },
   "Fleet": {
-    "title": "Mihomo X Manager",
-    "subtitle": "Manage Mihomo configs on routers through XKeen UI",
-    "onlineSummary": "Online: {online}/{total}",
     "tabsLabel": "Routers",
     "globalTab": "Global",
     "addRouter": "Add",
