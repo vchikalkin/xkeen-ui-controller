@@ -12,7 +12,7 @@ import {
   fetchRouterConfig,
   fetchRouters,
   removeRouter,
-  runApply,
+  runApplyForRouter,
   saveDraft,
 } from '@/lib/client/api';
 import { GLOBAL_TAB } from '@/lib/fleet-constants';
@@ -222,20 +222,53 @@ export function FleetPage() {
         await saveDraft(value);
       }
 
-      const outcome = await runApply({ content: value, routerIds, mode });
+      const outcomes = await Promise.all(
+        routerIds.map(async (routerId) => {
+          try {
+            const result = await runApplyForRouter(routerId, value, mode);
 
-      setResults(outcome.results);
+            setResults((prev) => {
+              return [
+                ...prev.filter((item) => item.routerId !== routerId),
+                result,
+              ];
+            });
+
+            return result;
+          } catch (error) {
+            const result: ApplyRouterResult = {
+              routerId,
+              ok: false,
+              stage: 'save',
+              error:
+                error instanceof Error ? error.message : t('actionError'),
+            };
+
+            setResults((prev) => {
+              return [
+                ...prev.filter((item) => item.routerId !== routerId),
+                result,
+              ];
+            });
+
+            return result;
+          } finally {
+            setPendingIds((prev) => prev.filter((id) => id !== routerId));
+          }
+        }),
+      );
+
       setIsDirty(false);
 
-      if (!outcome.ok) {
+      if (outcomes.some((result) => !result.ok)) {
         setActionError(t('partialFailure'));
       }
 
       ignorePromise(loadHealth());
     } catch (error) {
       setActionError(error instanceof Error ? error.message : t('actionError'));
-    } finally {
       setPendingIds([]);
+    } finally {
       setIsBusy(false);
       setIsApplyConfirmOpen(false);
     }

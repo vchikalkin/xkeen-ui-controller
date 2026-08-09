@@ -121,15 +121,21 @@ export async function fetchRouterConfig(id: string): Promise<string> {
   return data.content;
 }
 
-export async function runApply(
-  input: ApplyInput,
-): Promise<{ results: ApplyRouterResult[]; ok: boolean }> {
+export async function runApplyForRouter(
+  routerId: string,
+  content: string,
+  mode: ApplyMode,
+): Promise<ApplyRouterResult> {
   const data = await request<{ results: ApplyRouterResult[]; ok: boolean }>(
     '/api/apply',
     {
       init: {
         method: 'POST',
-        body: JSON.stringify(input),
+        body: JSON.stringify({
+          content,
+          routerIds: [routerId],
+          mode,
+        } satisfies ApplyInput),
       },
     },
   );
@@ -138,5 +144,12 @@ export async function runApply(
     throw new Error(data.error);
   }
 
-  return { results: data.results, ok: data.ok };
+  return (
+    data.results.at(0) ?? {
+      routerId,
+      ok: false,
+      stage: 'save',
+      error: 'Empty apply result',
+    }
+  );
 }
