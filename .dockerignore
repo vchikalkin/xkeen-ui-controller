@@ -9,4 +9,6 @@ data
 *.md
 .cursor
 .agents
+.github
+.husky
 agent-transcripts
