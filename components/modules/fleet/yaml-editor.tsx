@@ -13,6 +13,7 @@ import {
 import { indentWithTab } from '@codemirror/commands';
 import { yaml } from '@codemirror/lang-yaml';
 import { linter, lintGutter } from '@codemirror/lint';
+import { selectSelectionMatches } from '@codemirror/search';
 import {
   Compartment,
   EditorSelection,
@@ -35,6 +36,7 @@ interface YamlEditorProps {
   readonly placeholderText?: string;
   readonly onChange?: (value: string, isValid: boolean) => void;
   readonly onValidityChange?: (isValid: boolean, error?: string) => void;
+  readonly onSave?: () => void;
 }
 
 interface LinterOptions {
@@ -170,6 +172,7 @@ function YamlEditorInner(
     placeholderText,
     onChange,
     onValidityChange,
+    onSave,
   }: YamlEditorProps,
   // eslint-disable-next-line fsecond/prefer-destructured-optionals -- ref from forwardRef
   ref: Ref<YamlEditorHandle>,
@@ -180,15 +183,69 @@ function YamlEditorInner(
   const isValidRef = useRef(true);
   const onChangeRef = useRef(onChange);
   const onValidityChangeRef = useRef(onValidityChange);
+  const onSaveRef = useRef(onSave);
+  const formatRef = useRef<() => Promise<void>>(() => Promise.resolve());
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
 
   useEffect(() => {
     onChangeRef.current = onChange;
     onValidityChangeRef.current = onValidityChange;
-  }, [onChange, onValidityChange]);
+    onSaveRef.current = onSave;
+  }, [onChange, onSave, onValidityChange]);
 
   useImperativeHandle(ref, () => {
+    const format = async () => {
+      const view = viewRef.current;
+
+      if (!view || !isValidRef.current) {
+        return;
+      }
+
+      const content = view.state.doc.toString();
+
+      if (!content.trim()) {
+        return;
+      }
+
+      try {
+        const [prettier, prettierYaml] = await Promise.all([
+          import('prettier'),
+          import('prettier/plugins/yaml'),
+        ]);
+        const cursorOffset = view.state.selection.main.head;
+        const result = await prettier.formatWithCursor(content, {
+          cursorOffset,
+          parser: 'yaml',
+          plugins: [prettierYaml],
+          printWidth: 200,
+          tabWidth: 2,
+          singleQuote: true,
+          endOfLine: 'lf',
+        });
+
+        if (result.formatted === content) {
+          return;
+        }
+
+        view.dispatch({
+          changes: {
+            from: 0,
+            to: view.state.doc.length,
+            insert: result.formatted,
+          },
+          selection: EditorSelection.cursor(
+            Math.min(result.cursorOffset, result.formatted.length),
+          ),
+          scrollIntoView: true,
+        });
+      } catch {
+        // Invalid or unsupported YAML — keep the editor unchanged.
+      }
+    };
+
+    formatRef.current = format;
+
     return {
       getValue: () => viewRef.current?.state.doc.toString() ?? '',
       setValue: (value: string) => {
@@ -210,54 +267,7 @@ function YamlEditorInner(
         viewRef.current?.focus();
       },
       isValid: () => isValidRef.current,
-      format: async () => {
-        const view = viewRef.current;
-
-        if (!view || !isValidRef.current) {
-          return;
-        }
-
-        const content = view.state.doc.toString();
-
-        if (!content.trim()) {
-          return;
-        }
-
-        try {
-          const [prettier, prettierYaml] = await Promise.all([
-            import('prettier'),
-            import('prettier/plugins/yaml'),
-          ]);
-          const cursorOffset = view.state.selection.main.head;
-          const result = await prettier.formatWithCursor(content, {
-            cursorOffset,
-            parser: 'yaml',
-            plugins: [prettierYaml],
-            printWidth: 200,
-            tabWidth: 2,
-            singleQuote: true,
-            endOfLine: 'lf',
-          });
-
-          if (result.formatted === content) {
-            return;
-          }
-
-          view.dispatch({
-            changes: {
-              from: 0,
-              to: view.state.doc.length,
-              insert: result.formatted,
-            },
-            selection: EditorSelection.cursor(
-              Math.min(result.cursorOffset, result.formatted.length),
-            ),
-            scrollIntoView: true,
-          });
-        } catch {
-          // Invalid or unsupported YAML — keep the editor unchanged.
-        }
-      },
+      format,
     };
   });
 
@@ -288,7 +298,43 @@ function YamlEditorInner(
           },
         }),
         placeholder(placeholderText ?? ''),
-        keymap.of([indentWithTab]),
+        keymap.of([
+          {
+            key: 'Mod-s',
+            run: () => {
+              onSaveRef.current?.();
+
+              return true;
+            },
+          },
+          {
+            key: 'Shift-Alt-f',
+            run: () => {
+              formatRef.current().catch(() => undefined);
+
+              return true;
+            },
+          },
+          {
+            key: 'Mod-F2',
+            run: (editorView) => {
+              const selection = editorView.state.selection.main;
+
+              if (selection.empty) {
+                const word = editorView.state.wordAt(selection.head);
+
+                if (word) {
+                  editorView.dispatch({
+                    selection: { anchor: word.from, head: word.to },
+                  });
+                }
+              }
+
+              return selectSelectionMatches(editorView);
+            },
+          },
+          indentWithTab,
+        ]),
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
             onChangeRef.current?.(

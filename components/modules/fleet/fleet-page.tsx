@@ -376,6 +376,11 @@ export function FleetPage() {
   const areActionsDisabled =
     isBusy || isLoading || !isDirty || !isValid || targetRouters.length === 0;
   const isBackupDisabled = isBusy || isLoading || targetRouters.length === 0;
+  const areActionsDisabledRef = useRef(areActionsDisabled);
+
+  useEffect(() => {
+    areActionsDisabledRef.current = areActionsDisabled;
+  }, [areActionsDisabled]);
 
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col gap-3 overflow-hidden p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
@@ -434,6 +439,13 @@ export function FleetPage() {
               onValidityChange={(nextIsValid) => {
                 setIsValid(nextIsValid);
               }}
+              onSave={() => {
+                if (areActionsDisabledRef.current) {
+                  return;
+                }
+
+                ignorePromise(runMode('save'));
+              }}
             />
           </div>
         </div>
@@ -472,6 +484,7 @@ export function FleetPage() {
             <Button
               variant="outline"
               disabled={areActionsDisabled}
+              title={t('saveShortcut')}
               onClick={() => {
                 ignorePromise(runMode('save'));
               }}
@@ -482,6 +495,7 @@ export function FleetPage() {
             <Button
               variant="outline"
               disabled={isBusy || isLoading || !isValid}
+              title={t('formatShortcut')}
               onClick={() => {
                 const editor = editorRef.current;
 
