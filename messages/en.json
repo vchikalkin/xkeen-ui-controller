@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Mihomo X Manager"
+    "title": "XKeen UI Controller"
   },
   "MdxPage": {
     "title": "MDX example",
@@ -44,7 +44,7 @@
     "actionError": "Action failed",
     "backupOk": "Backup created ({name})",
     "loadConfigError": "Could not load config",
-    "bootstrapError": "Could not start manager",
+    "bootstrapError": "Could not start controller",
     "removeError": "Could not remove router",
     "addError": "Could not add router",
     "unknownError": "Unknown error",

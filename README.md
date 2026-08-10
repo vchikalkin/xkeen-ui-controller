@@ -1,6 +1,6 @@
-# Mihomo X Manager
+# XKeen UI Controller
 
-Веб-интерфейс для конфигов **Mihomo** на парке роутеров через **XKeen UI**. Один Global-черновик YAML, вкладки по роутерам, Save и soft-restart Mihomo.
+Одна панель для конфигов **Mihomo** на нескольких роутерах с **XKeen UI**. Один Global-черновик YAML, вкладки по роутерам, Save и soft-restart Mihomo.
 
 ## Возможности
 
@@ -20,7 +20,7 @@
 Нужны Docker и Docker Compose. Образ публичный: на сервере логин в Docker Hub не нужен.
 
 1. Скопируйте [`docker-compose.yml`](docker-compose.yml) на сервер.
-2. При необходимости измените порт (`3000:3000`) и путь volume (`/config/mihomo-x-manager` → свой каталог для данных).
+2. При необходимости измените порт (`3000:3000`) и путь volume (`/config/xkeen-ui-controller` → свой каталог для данных).
 3. Запустите:
 
 ```bash
@@ -41,13 +41,13 @@ docker compose pull
 docker compose up -d
 ```
 
-Или снова **Pull** → **Up** в OMV. Тег по умолчанию: `latest`. Чтобы зафиксировать сборку, укажите например `vchikalkin/mihomo-x-manager:sha-abc1234`.
+Или снова **Pull** → **Up** в OMV. Тег по умолчанию: `latest`. Чтобы зафиксировать сборку, укажите например `vchikalkin/xkeen-ui-controller:sha-abc1234`.
 
 ## Переменные окружения
 
 | Переменная | По умолчанию | Назначение |
 | --- | --- | --- |
-| `DATA_DIR` | `./data` (в контейнере `/data`) | Каталог данных менеджера (`routers.json`, draft) |
+| `DATA_DIR` | `./data` (в контейнере `/data`) | Каталог данных контроллера (`routers.json`, draft) |
 | `MIHOMO_CONFIG_PATH` | `/opt/etc/mihomo/config.yaml` | Путь к конфигу Mihomo **на роутере** (как его видит XKeen) |
 | `XKEEN_UI_PORT` | `1000` | Порт XKeen UI на роутерах |
 
@@ -63,12 +63,12 @@ pnpm dev
 Собрать образ локально:
 
 ```bash
-docker build -t mihomo-x-manager .
+docker build -t xkeen-ui-controller .
 ```
 
 ## Публикация образа (CI)
 
-GitHub Actions собирает образ и пушит в Docker Hub как `{DOCKERHUB_USERNAME}/mihomo-x-manager` (`latest` и `sha-<short>`) при push в `master` или ручном `workflow_dispatch`.
+GitHub Actions собирает образ и пушит в Docker Hub как `{DOCKERHUB_USERNAME}/xkeen-ui-controller` (`latest` и `sha-<short>`) при push в `master` или ручном `workflow_dispatch`.
 
 Секреты репозитория (Settings → Secrets and variables → Actions):
 

@@ -29,7 +29,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/mihomo-x-manager
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/xkeen-ui-controller
           tags: |
             type=raw,value=latest
             type=sha,prefix=sha-

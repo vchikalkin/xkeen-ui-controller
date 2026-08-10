@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Mihomo X Manager',
-  description: 'Fleet manager for Mihomo configs via XKeen UI',
+  title: 'XKeen UI Controller',
+  description:
+    'One panel to manage Mihomo configs on multiple routers with XKeen UI',
 };
 
 export default function RootLayout({

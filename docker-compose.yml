@@ -1,6 +1,6 @@
 services:
-  mihomo-x-manager:
-    image: vchikalkin/mihomo-x-manager:latest
+  xkeen-ui-controller:
+    image: vchikalkin/xkeen-ui-controller:latest
     ports:
       - '3000:3000'
     environment:
@@ -8,5 +8,5 @@ services:
       MIHOMO_CONFIG_PATH: /opt/etc/mihomo/config.yaml
       XKEEN_UI_PORT: '1000'
     volumes:
-      - /config/mihomo-x-manager:/data
+      - /config/xkeen-ui-controller:/data
     restart: unless-stopped

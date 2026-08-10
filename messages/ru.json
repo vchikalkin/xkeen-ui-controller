@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Mihomo X Manager"
+    "title": "XKeen UI Controller"
   },
   "MdxPage": {
     "title": "Пример MDX",
@@ -44,7 +44,7 @@
     "actionError": "Действие не выполнено",
     "backupOk": "Бэкап создан ({name})",
     "loadConfigError": "Не удалось загрузить конфиг",
-    "bootstrapError": "Не удалось запустить менеджер",
+    "bootstrapError": "Не удалось запустить контроллер",
     "removeError": "Не удалось удалить роутер",
     "addError": "Не удалось добавить роутер",
     "unknownError": "Неизвестная ошибка",
